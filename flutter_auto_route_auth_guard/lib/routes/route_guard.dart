@@ -20,12 +20,13 @@ class AuthGuard extends AutoRedirectGuard {
   @override
   void onNavigation(NavigationResolver resolver, StackRouter router) {
     print(
-        'onNavigation authService.isAuthenticated ${authService.isAuthenticated}');
+        'onNavigation authService.isAuthenticated ${authService.isAuthenticated} router.currentUrl ${router.currentUrl}');
     // the navigation is paused until resolver.next() is called with either
     // true to resume/continue navigation or false to abort navigation
     if (authService.isAuthenticated) {
       // if user is authenticated we continue
       resolver.next(true);
+      // router.pushNamed(router.currentUrl);
     } else {
       // we redirect the user to our login page
       router.push(LoginRoute(onResult: (success) {

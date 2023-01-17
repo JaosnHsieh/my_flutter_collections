@@ -24,3 +24,8 @@ class UserPage extends StatelessWidget {
     );
   }
 }
+
+// adb shell am start -a android.intent.action.VIEW \
+//     -c android.intent.category.BROWSABLE \
+//     -d "http://flutterbooksample.com/#/dashboard/user?id=deepLinkworks" \
+//     com.example.flutter_auto_route_test
