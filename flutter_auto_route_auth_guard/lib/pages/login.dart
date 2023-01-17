@@ -18,9 +18,14 @@ class LoginPage extends StatelessWidget {
       child: ElevatedButton(
           onPressed: (() async {
             AuthService().isAuthenticated = true;
-            context.router.navigate(DashboardRoute(children: [
-              UserRoute(userId: 'Login successfully from login page')
-            ]));
+            context.router.replaceAll([
+              DashboardRoute(children: [
+                UserRoute(userId: 'Login successfully from login page')
+              ])
+            ]);
+            // context.router(DashboardRoute(children: [
+            //   UserRoute(userId: 'Login successfully from login page')
+            // ]));
           }),
           child: Text('Click to Login')),
     ));

@@ -32,6 +32,7 @@ class AuthGuard extends AutoRedirectGuard {
         // if success == true the navigation will be resumed
         // else it will be aborted
         resolver.next(success);
+        router.removeLast();
       }));
     }
   }

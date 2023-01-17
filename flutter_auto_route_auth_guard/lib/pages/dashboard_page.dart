@@ -9,44 +9,32 @@ class DashboardPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AutoTabsRouter.tabBar(
-      routes: [
-        PostRoute(),
-        SettingsRoute(),
-        UserRoute(userId: '3'),
-      ],
-      builder: (context, child, animation) {
-        final tabsRouter = AutoTabsRouter.of(context);
-        return Row(
-          children: [
-            Column(
-              children: [
-                ElevatedButton(
-                    onPressed: () {
-                      context.router.navigate(
-                          const DashboardRoute(children: [PostRoute()]));
-                    },
-                    child: Text(
-                        'Post${tabsRouter.activeIndex == 0 ? '        ' : ''}')),
-                ElevatedButton(
-                    onPressed: (() {
-                      context.router.navigate(
-                          const DashboardRoute(children: [SettingsRoute()]));
-                    }),
-                    child: Text(
-                        'Setting${tabsRouter.activeIndex == 1 ? '        ' : ''}')),
-                ElevatedButton(
-                    onPressed: () {
-                      context.router.navigate(
-                          DashboardRoute(children: [UserRoute(userId: '2')]));
-                    },
-                    child: Text(
-                        'User${tabsRouter.activeIndex == 2 ? '        ' : ''}'))
+        routes: [
+          UserRoute(userId: '3'),
+          const PostRoute(),
+          const SettingsRoute(),
+        ],
+        builder: (context, child, animation) {
+          final tabsRouter = AutoTabsRouter.of(context);
+
+          return Scaffold(
+            appBar: AppBar(
+                title: Text(context.topRoute.name),
+                leading: AutoLeadingButton()),
+            body: child,
+            bottomNavigationBar: BottomNavigationBar(
+              currentIndex: tabsRouter.activeIndex,
+              onTap: tabsRouter.setActiveIndex,
+              items: const [
+                BottomNavigationBarItem(
+                    label: 'User', icon: Icon(Icons.person)),
+                BottomNavigationBarItem(
+                    label: 'Post', icon: Icon(Icons.article)),
+                BottomNavigationBarItem(
+                    label: 'Settings', icon: Icon(Icons.settings)),
               ],
             ),
-            Expanded(child: child)
-          ],
-        );
-      },
-    );
+          );
+        });
   }
 }
