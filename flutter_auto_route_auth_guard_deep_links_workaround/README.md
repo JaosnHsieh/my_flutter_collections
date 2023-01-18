@@ -1,10 +1,6 @@
 # flutter_auto_route_auth_guard_deep_links_workaround
 
-Deep links, query strings, and auth guard workaround.
-
-[auto_route](https://github.com/Milad-Akarie/auto_route_library)
-
-[related issue](https://github.com/Milad-Akarie/auto_route_library/issues/1329)
+Deep links, query strings, and auth guard with [auto_route](https://github.com/Milad-Akarie/auto_route_library) and [uni_link](https://github.com/avioli/uni_links).
 
 ## Run
 
@@ -16,56 +12,28 @@ Go to home page that running the app in background.
 
 Open another terminal and run deep link testing
 
+### android app link
+
 ```bash
 adb shell 'am start -a android.intent.action.VIEW -c android.intent.category.BROWSABLE -d "http://flutterbooksample.com/#/dashboard/user?id=deepLinkworks&from=external" com.example.flutter_auto_route_test'
 ```
 
-\*Currently not working with cold start, should be done via [uni_links](https://pub.dev/packages/uni_links) and passed it to `initialDeepLink` on auto_route.
+### android deep link
+
+```bash
+adb shell 'am start -a android.intent.action.VIEW -c android.intent.category.BROWSABLE -d "logrckt://flutterbooksample.com/#/dashboard/user?id=deepLinkworks&from=external" com.example.uni_links_example'
+```
+
+## references
+
+https://github.com/Milad-Akarie/auto_route_library/issues/461
+
+https://github.com/avioli/uni_links/tree/master/uni_links
+
+https://github.com/himanshusharma89/uni_links_example
+
+https://blog.logrocket.com/understanding-deep-linking-flutter-uni-links/
+
+https://developer.android.com/training/app-links
 
 ## Main Code
-
-route_guard.dart
-
-```dart
-bool _getIsUseAutoRouteDeepLinkWorkaround({required StackRouter router}) {
-    var re = RegExp(r"/dashboard/user");
-    var reIsExternal = RegExp(r'from=external');
-    var isMatch1 = re.hasMatch(router.currentUrl);
-    var isMatch2 = reIsExternal.hasMatch(router.currentUrl);
-    var isUse = isMatch1 && isMatch2 && isLoading == false;
-    if (!isUse) {
-      return isUse;
-    }
-    print(
-        're.hasMatch(router.currentUrl) ${isMatch1} reIsExternal.hasMatch(router.currentUrl) ${isMatch2}');
-    if (isUse) {
-      isLoading = true;
-      Future.delayed(Duration(seconds: 2)).then((value) {
-        isLoading = false;
-      });
-      router.navigateNamed('/dashboard/user?id=fromDeepLink');
-      print('onNavigation deep link router ${router}');
-    }
-    return isUse;
-  }
-
-  @override
-  void onNavigation(NavigationResolver resolver, StackRouter router) {
-    print(
-        'onNavigation authService.isAuthenticated ${authService.isAuthenticated}');
-    print('onNavigation router.currentUrl ${router.currentUrl}');
-    if (authService.isAuthenticated) {
-      if (_getIsUseAutoRouteDeepLinkWorkaround(router: router) == false) {
-        resolver.next(true);
-      }
-    } else {
-      // we redirect the user to our login page
-      router.push(LoginRoute(onResult: (success) {
-        // if success == true the navigation will be resumed
-        // else it will be aborted
-        resolver.next(success);
-        router.removeLast();
-      }));
-    }
-  }
-```
