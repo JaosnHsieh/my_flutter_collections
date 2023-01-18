@@ -10,7 +10,7 @@ class DashboardPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return AutoTabsRouter.tabBar(
         routes: [
-          UserRoute(userId: '3'),
+          UserRoute(),
           const PostRoute(),
           const SettingsRoute(),
         ],

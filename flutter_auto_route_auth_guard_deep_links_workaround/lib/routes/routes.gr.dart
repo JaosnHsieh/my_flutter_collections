@@ -52,15 +52,21 @@ class AppRouter extends _i6.RootStackRouter {
       final queryParams = routeData.queryParams;
       final args = routeData.argsAs<UserRouteArgs>(
           orElse: () => UserRouteArgs(
-                  userId: queryParams.getString(
-                'id',
-                'default',
-              )));
+                userId: queryParams.getString(
+                  'id',
+                  'default',
+                ),
+                deepLinkWorkAroundQueryString: queryParams.getString(
+                  'deepLinkWorkAroundQueryString',
+                  'internal',
+                ),
+              ));
       return _i6.MaterialPageX<dynamic>(
         routeData: routeData,
         child: _i3.UserPage(
           key: args.key,
           userId: args.userId,
+          deepLinkWorkAroundQueryString: args.deepLinkWorkAroundQueryString,
         ),
       );
     },
@@ -168,14 +174,19 @@ class UserRoute extends _i6.PageRouteInfo<UserRouteArgs> {
   UserRoute({
     _i7.Key? key,
     String userId = 'default',
+    String deepLinkWorkAroundQueryString = 'internal',
   }) : super(
           UserRoute.name,
           path: 'user',
           args: UserRouteArgs(
             key: key,
             userId: userId,
+            deepLinkWorkAroundQueryString: deepLinkWorkAroundQueryString,
           ),
-          rawQueryParams: {'id': userId},
+          rawQueryParams: {
+            'id': userId,
+            'deepLinkWorkAroundQueryString': deepLinkWorkAroundQueryString,
+          },
         );
 
   static const String name = 'UserRoute';
@@ -185,15 +196,18 @@ class UserRouteArgs {
   const UserRouteArgs({
     this.key,
     this.userId = 'default',
+    this.deepLinkWorkAroundQueryString = 'internal',
   });
 
   final _i7.Key? key;
 
   final String userId;
 
+  final String deepLinkWorkAroundQueryString;
+
   @override
   String toString() {
-    return 'UserRouteArgs{key: $key, userId: $userId}';
+    return 'UserRouteArgs{key: $key, userId: $userId, deepLinkWorkAroundQueryString: $deepLinkWorkAroundQueryString}';
   }
 }
 

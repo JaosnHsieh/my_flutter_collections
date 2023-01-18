@@ -4,13 +4,19 @@ import 'package:flutter_auto_route_test/utils/auth_services.dart';
 
 class UserPage extends StatelessWidget {
   final String userId;
-  const UserPage({super.key, @QueryParam('id') this.userId = 'default'});
+  final String deepLinkWorkAroundQueryString;
+  const UserPage(
+      {super.key,
+      @QueryParam('id')
+          this.userId = 'default',
+      @QueryParam('deepLinkWorkAroundQueryString')
+          this.deepLinkWorkAroundQueryString = 'internal'});
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
+    print('UserPage userId ${userId}');
+    return Column(
       children: [
-        Text('UserPage ${userId}'),
         SizedBox(
           width: 100,
           height: 100,
@@ -19,6 +25,14 @@ class UserPage extends StatelessWidget {
                 AuthService().isAuthenticated = false;
               },
               child: Text('Logout')),
+        ),
+        Container(
+          width: 300,
+          height: 100,
+          color: Colors.blueAccent,
+          child: Text(
+            'userId "${userId}"',
+          ),
         )
       ],
     );
