@@ -6,7 +6,7 @@ import 'package:flutter_auto_route_test/utils/auth_services.dart';
 import 'package:uni_links/uni_links.dart';
 
 void main() async {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
